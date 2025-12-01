@@ -28,46 +28,47 @@ public class OperacionController {
     private OperacionServiceInt service;
    
     @PostMapping("/generarToken")
-    public ResponseEntity<String> generarToken() {
+    public ResponseEntity<String> generarToken(@RequestHeader("Nickname") String nombreCliente) {
        // Simula un posible fallo en la generación del token
         int intento = contadorFallos.siguienteIntento();
         System.out.println("Intento de generar token #" + intento);
-  
-        if (intento == 1)
-        try {
-            Thread.sleep(6000);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
+
+        // Si aún estamos en la secuencia inicial de fallos, simularlos
+        if (contadorFallos.shouldSimulateInitialFailure(intento)) {
+            System.out.println("Simulando fallo inicial en generarToken (intento " + intento + ")...");
+            throw new RuntimeException("Fallo simulado en intento " + intento);
         }
-        
-        String token = service.generarToken();
-        return ResponseEntity.ok(token);
+
+        String token = service.generarToken(nombreCliente);
+        ResponseEntity<String> response = ResponseEntity.ok(token);
+        // Si llegamos aquí es porque la operación tuvo éxito; si estabamos en la secuencia inicial,
+        // marcarla como completada para que futuras operaciones no simulen fallos.
+        contadorFallos.markInitialSequenceDone();
+        return response;
     }
 
-    @PostMapping("/retirar")
-    public ResponseEntity<String> retirar(@RequestHeader("Operacion-Token") String token,
+    @PostMapping("/pago")
+    public ResponseEntity<String> pago(@RequestHeader("Operacion-Token") String token,
                                           @RequestBody OperacionRetiroDTO operacion) {
         int intento = contadorFallos.siguienteIntento();
-        System.out.println("Intento de retiro #" + intento);
-  
-        if (intento < 4) {
-            // Simula un fallo (por ejemplo, retardo que cause timeout o una excepción)
-            try { 
-                System.out.println("Simulando fallo...");
-                Thread.sleep(8000); // mayor al timeout del cliente (por ejemplo, 5s)
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-            throw new RuntimeException("Fallo simulado");
+        System.out.println("Intento de pago #" + intento);
+
+        if (contadorFallos.shouldSimulateInitialFailure(intento)) {
+            System.out.println("Simulando fallo inicial en pago (intento " + intento + ")...");
+            throw new RuntimeException("Fallo simulado en intento " + intento);
         }
-        String respuesta=this.service.procesarRetiro(token, operacion.getMonto(), operacion.getIdCliente());
-        return ResponseEntity.ok(respuesta +" "+ intento);
+
+        String respuesta=this.service.procesarPago(token, operacion.getMonto(), operacion.getNombreCliente());
+        ResponseEntity<String> response = ResponseEntity.ok(respuesta +" "+ intento);
+        // Si la operación fue exitosa y estábamos en la secuencia inicial, marcarla como completada
+        contadorFallos.markInitialSequenceDone();
+        return response;
     }
 
-    @GetMapping("/MontosRetirados")
-    public List<Double> getMontosRetirados(@RequestParam int idCliente)
+    @GetMapping("/MontosPagados")
+    public List<Double> getMontosPagados(@RequestParam String nombreCliente)
     {
-        return service.getMontosRetirados(idCliente);
+        return service.getMontosPagados(nombreCliente);
     }
 
 }

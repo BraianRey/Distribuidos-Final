@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class OperacionRetiroDTO {    
     private double monto;
-    private int idCliente;
+    private String nombreCliente;
 }

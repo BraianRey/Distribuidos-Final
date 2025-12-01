@@ -14,5 +14,6 @@ public class OperacionToken {
     private boolean usado;
     private LocalDateTime fechaCreacion;
     private double montoRetirado;
-    private int idCliente;
+    private double costoGeneracion;
+    private String nombreCliente;
 }

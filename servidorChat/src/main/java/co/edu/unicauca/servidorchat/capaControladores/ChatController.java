@@ -8,6 +8,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
+import co.edu.unicauca.servidorchat.capaFachadaServices.ReaccionServiceInt;
 import co.edu.unicauca.servidorchat.capaFachadaServices.DTO.MensajePrivadoDTO;
 import co.edu.unicauca.servidorchat.capaFachadaServices.DTO.MensajePublicoDTO;
 import co.edu.unicauca.servidorchat.capaFachadaServices.DTO.MensajeReproduccionDTO;
@@ -17,6 +18,9 @@ public class ChatController {
 
   @Autowired
   private SimpMessagingTemplate simpMessagingTemplate;
+
+  @Autowired
+  private ReaccionServiceInt reaccionService;
 
   @MessageMapping("/enviarMensajePublico")
   @SendTo("/chatGrupal/salaChatPublica/")
@@ -29,7 +33,7 @@ public class ChatController {
   @MessageMapping("/enviarMensajePrivado/")
   public void enviarMensajePrivado(MensajePrivadoDTO mensaje) {
     System.out.println("🔵 Reacción recibida en servidor: " + mensaje);
-    simpMessagingTemplate.convertAndSend("/chatPrivado/" + mensaje.getIdCancion(), mensaje);
+    reaccionService.procesarReaccion(mensaje);
   }
 
   @MessageMapping("/avisarPlay/")
