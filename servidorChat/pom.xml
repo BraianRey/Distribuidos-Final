@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.3.11</version>
+		<version>3.2.5</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>co.edu.unicauca</groupId>
@@ -73,7 +73,24 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-openfeign</artifactId>
+			<version>4.0.4</version>
+		</dependency>
 	</dependencies>
+	
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>2023.0.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<build>
 		<plugins>
