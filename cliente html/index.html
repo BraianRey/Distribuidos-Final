@@ -7,12 +7,14 @@
         #log { border: 1px solid #ccc; padding: 10px; height: 150px; overflow-y: scroll; margin-top: 10px; }
         .success { color: green; }
         .error { color: red; }
+        .hidden { display: none; }
     </style>
+    <link rel="stylesheet" href="./reacciones.css" />
 </head>
 <body>
     <h1>Transmisión de Audio con gRPC-Web </h1>
     <p>La conexión se intentará al servidor ubicado en localhost:8080</p>
-    <audio id="audio-player" controls style="display:none"></audio>
+    <audio id="audio-player" controls class="hidden"></audio>
 
     <div>
         <label for="song-title">Título de la canción:</label>
@@ -30,8 +32,64 @@
    
     <h3 id="status">Esperando petición...</h3>
     <div id="log"></div>
+
+    <section class="reactions-app">
+        <div class="app">
+            <header>
+                <div class="nickname-input">
+                    <label for="nicknameOrigen">Nickname del usuario:</label>
+                    <input type="text" id="nicknameOrigen" placeholder="Escribe tu nickname" />
+                </div>
+            </header>
+
+            <section class="content-grid">
+                <article class="panel player-panel">
+                    <p>Estado del reproductor para compartir con otros oyentes</p>
+                    <div class="player-visual">
+                        <button id="btnPlay" class="play-btn" aria-label="Play/Pause">
+                            ▶
+                        </button>
+                    </div>
+                    <div class="player-actions">
+                        <input type="number" id="idCancion" placeholder="ID numérico de la canción" min="1" step="1" />
+                    </div>
+                </article>
+
+                <article class="panel list-panel">
+                    <p>Usuarios que inician reproducción</p>
+                    <div id="usuariosReproduciendo" class="bubble-wrapper"></div>
+                </article>
+            </section>
+
+            <section class="reaction-row">
+                <input type="text" id="nicknameDestino" class="destination-input" placeholder="Nickname destino (opcional)" />
+                <div class="reaction-buttons">
+                    <button class="reaction-btn" data-reaction="like" title="Me gusta" disabled>👍</button>
+                    <button class="reaction-btn" data-reaction="love" title="Me encanta" disabled>❤️</button>
+                    <button class="reaction-btn" data-reaction="angry" title="No me gusta" disabled>😡</button>
+                    <button class="reaction-btn" data-reaction="fun" title="Me divierte" disabled>😄</button>
+                </div>
+            </section>
+
+            <section class="content-grid bottom-grid">
+                <article class="panel reactions-panel">
+                    <p>Reacciones recibidas</p>
+                    <div id="reaccionesUsuarios" class="bubble-wrapper"></div>
+                </article>
+
+                <article class="panel list-panel">
+                    <p>Usuarios que detienen la reproducción</p>
+                    <div id="usuariosDetenidos" class="bubble-wrapper"></div>
+                </article>
+            </section>
+        </div>
+    </section>
+
     <script src="./bundle.js"></script>
     <script src="./funciones.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+    <script src="./reacciones.js"></script>
     
 </body>
 </html>

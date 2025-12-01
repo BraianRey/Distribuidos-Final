@@ -58,7 +58,7 @@ function iniciar_streaming_cancion(titulo, formato) {
         if (!_firstFragmentReceived) {
             _firstFragmentReceived = true;
             if (audioPlayer) {
-                audioPlayer.style.display = '';
+                audioPlayer.classList.remove('hidden');
             }
             if (typeof window !== 'undefined' && window.__writeAudioLog) {
                 window.__writeAudioLog('Primer fragmento recibido. Reproductor mostrado.', 'success');
