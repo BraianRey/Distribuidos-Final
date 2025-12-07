@@ -334,4 +334,76 @@
   "tipo" : "pago",
   "token" : "f3b6cd14-950e-48e1-b866-a2cc425f7f54",
   "montoRetirado" : 10.0
+}, {
+  "tipo" : "generacion",
+  "token" : "ff117a49-1f02-43c7-8db5-210249efef7f",
+  "costoGeneracion" : 10.0,
+  "nombreCliente" : "no",
+  "fecha" : "2025-12-07T10:41:43.699900447"
+}, {
+  "tipo" : "pago",
+  "token" : "ff117a49-1f02-43c7-8db5-210249efef7f",
+  "montoRetirado" : 10.0,
+  "nombreCliente" : "no",
+  "fecha" : "2025-12-07T10:41:43.794671044"
+}, {
+  "tipo" : "generacion",
+  "token" : "9ade5612-ed8d-47da-a3ee-3c6884ecace7",
+  "costoGeneracion" : 10.0,
+  "nombreCliente" : "no",
+  "fecha" : "2025-12-07T10:41:51.174948496"
+}, {
+  "tipo" : "pago",
+  "token" : "9ade5612-ed8d-47da-a3ee-3c6884ecace7",
+  "montoRetirado" : 10.0,
+  "nombreCliente" : "no",
+  "fecha" : "2025-12-07T10:41:51.190926304"
+}, {
+  "tipo" : "generacion",
+  "token" : "6a78fdc6-5244-429f-8f21-b137fcae8488",
+  "costoGeneracion" : 10.0,
+  "nombreCliente" : "no",
+  "fecha" : "2025-12-07T10:41:55.816146017"
+}, {
+  "tipo" : "pago",
+  "token" : "6a78fdc6-5244-429f-8f21-b137fcae8488",
+  "montoRetirado" : 10.0,
+  "nombreCliente" : "no",
+  "fecha" : "2025-12-07T10:41:55.832665337"
+}, {
+  "tipo" : "generacion",
+  "token" : "4d08bb82-726a-498b-8696-06e1ef85916f",
+  "costoGeneracion" : 10.0,
+  "nombreCliente" : "no",
+  "fecha" : "2025-12-07T10:42:26.320652862"
+}, {
+  "tipo" : "pago",
+  "token" : "4d08bb82-726a-498b-8696-06e1ef85916f",
+  "montoRetirado" : 10.0,
+  "nombreCliente" : "no",
+  "fecha" : "2025-12-07T10:42:26.344613083"
+}, {
+  "tipo" : "generacion",
+  "token" : "4279a0e7-316d-4ab0-bba7-167ff82a6e23",
+  "costoGeneracion" : 10.0,
+  "nombreCliente" : "si",
+  "fecha" : "2025-12-07T10:44:36.946521485"
+}, {
+  "tipo" : "pago",
+  "token" : "4279a0e7-316d-4ab0-bba7-167ff82a6e23",
+  "montoRetirado" : 10.0,
+  "nombreCliente" : "si",
+  "fecha" : "2025-12-07T10:44:36.963443549"
+}, {
+  "tipo" : "generacion",
+  "token" : "a9cf2615-4da4-4ab9-a622-52a83b290dcb",
+  "costoGeneracion" : 10.0,
+  "nombreCliente" : "si",
+  "fecha" : "2025-12-07T10:44:40.096146877"
+}, {
+  "tipo" : "pago",
+  "token" : "a9cf2615-4da4-4ab9-a622-52a83b290dcb",
+  "montoRetirado" : 10.0,
+  "nombreCliente" : "si",
+  "fecha" : "2025-12-07T10:44:40.106916506"
 } ]
