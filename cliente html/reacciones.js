@@ -311,13 +311,6 @@
 
     function handleAudioPlay() {
         if (idCancionActual === null) {
-            const tituloInput = document.getElementById('song-title');
-            if (tituloInput && tituloInput.value) {
-                setCancionDesdeTitulo(tituloInput.value);
-            }
-        }
-
-        if (idCancionActual === null) {
             console.warn('No hay id de canción para sincronizar reproducciones.');
             return;
         }
@@ -326,6 +319,20 @@
     }
 
     function handleAudioPause() {
+        if (reproduciendoCancion) {
+            detenerReproduccion();
+        }
+    }
+
+    function notifyPlay() {
+        if (idCancionActual === null) {
+            console.warn('No hay id de canción para notificar play.');
+            return;
+        }
+        iniciarReproduccionAuto(idCancionActual);
+    }
+
+    function notifyPause() {
         if (reproduciendoCancion) {
             detenerReproduccion();
         }
@@ -343,13 +350,16 @@
             console.warn('No fue posible iniciar la reproducción automática: falta id de canción.');
             return;
         }
-        iniciarReproduccionAuto(id);
+        // No llamar a iniciarReproduccionAuto aquí, solo preparar
+        // El usuario debe presionar play en el reproductor
     }
 
     if (typeof window !== 'undefined') {
         window.__reaccionesIntegration = {
             setCancionDesdeTitulo,
-            startPlaybackFlow
+            startPlaybackFlow,
+            notifyPlay,
+            notifyPause
         };
     }
 })();

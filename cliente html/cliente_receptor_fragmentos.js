@@ -83,16 +83,21 @@ function iniciar_streaming_cancion(titulo, formato) {
         // Crea una URL de objeto para el Blob
         const audioUrl = URL.createObjectURL(audioBlob);
 
-        // Asigna la URL al reproductor y comienza la reproducción
+        // Asigna la URL al reproductor (NO iniciar reproducción automáticamente)
         if (audioPlayer) {
             audioPlayer.src = audioUrl;
-            audioPlayer.play()
-                .then(() => {
-                    console.log('▶️ Reproducción de la canción iniciada con éxito.');
-                })
-                .catch(error => {
-                    console.error('❌ Error al iniciar la reproducción automática. Intente dar clic en el reproductor.', error);
-                });
+            
+            // Mostrar el reproductor personalizado
+            const customPlayer = document.getElementById('custom-player');
+            if (customPlayer) {
+                customPlayer.classList.add('active');
+            }
+            
+            console.log('✅ Canción cargada. Presiona PLAY para reproducir.');
+            
+            if (typeof window !== 'undefined' && window.__writeAudioLog) {
+                window.__writeAudioLog('Canción cargada. Presiona PLAY para reproducir.', 'success');
+            }
         }
 
         // Limpia los fragmentos para una próxima llamada

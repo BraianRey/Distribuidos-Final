@@ -1,6 +1,7 @@
 // funcion.js - wrapper simple para llamar a la implementación del streaming
 
 function pedirCancion(titulo, formato) {
+    // Solo preparar la canción, no iniciar reproducción automática
     if (typeof window !== 'undefined' && window.__reaccionesIntegration && typeof window.__reaccionesIntegration.startPlaybackFlow === 'function') {
         window.__reaccionesIntegration.startPlaybackFlow(titulo);
     }
