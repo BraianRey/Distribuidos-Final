@@ -1,7 +1,11 @@
 (function () {
-    const DEFAULT_WS_URL = 'http://localhost:5000/ws';
+    const DEFAULT_WS_URL = 'http://localhost:8081/ws';
     const CONFIG = window.__REACTIONS_CONFIG__ || {};
     const WS_ENDPOINT = CONFIG.wsUrl || DEFAULT_WS_URL;
+    const KNOWN_TITLE_TO_ID = Object.freeze({
+        'cancion1.mp3': 1,
+        'cancion2.mp3': 2
+    });
 
     const DESTINATIONS = {
         enviarPrivado: '/apiChat/enviarMensajePrivado/',
@@ -20,19 +24,16 @@
     let clienteChat = null;
     let nicknamePropio = '';
     let reproduciendoCancion = false;
-    let idCancionActual = '';
+    let idCancionActual = null;
     let suscripcionesActivas = [];
+    let isConnecting = false;
+    const pendingConnectionCallbacks = [];
 
     document.addEventListener('DOMContentLoaded', () => {
         inicializarUI();
     });
 
     function inicializarUI() {
-        const playButton = document.getElementById('btnPlay');
-        if (playButton) {
-            playButton.addEventListener('click', toggleReproduccion);
-        }
-
         document.querySelectorAll('.reaction-btn').forEach((boton) => {
             boton.addEventListener('click', () => enviarReaccionPrivada(boton.dataset.reaction));
         });
@@ -42,25 +43,22 @@
             nicknameInput.addEventListener('input', actualizarEstadoControles);
         }
 
+        const audioPlayer = document.getElementById('audio-player');
+        if (audioPlayer) {
+            audioPlayer.addEventListener('play', handleAudioPlay);
+            audioPlayer.addEventListener('pause', handleAudioPause);
+            audioPlayer.addEventListener('ended', handleAudioPause);
+        }
+
         actualizarEstadoControles();
     }
 
     function actualizarEstadoControles() {
         const conectado = clienteChat && clienteChat.connected;
-        const btnPlay = document.getElementById('btnPlay');
         const nicknameInput = document.getElementById('nicknameOrigen');
-        const idCancionInput = document.getElementById('idCancion');
 
         if (nicknameInput) {
             nicknameInput.disabled = conectado;
-        }
-        if (idCancionInput) {
-            idCancionInput.disabled = reproduciendoCancion;
-        }
-
-        if (btnPlay) {
-            btnPlay.textContent = reproduciendoCancion ? '⏸' : '▶';
-            btnPlay.disabled = !nicknameInput || !nicknameInput.value.trim();
         }
 
         document.querySelectorAll('.reaction-btn').forEach((boton) => {
@@ -74,47 +72,61 @@
     }
 
     function obtenerIdCancion() {
-        const idInput = document.getElementById('idCancion');
-        if (!idInput) {
-            return '';
+        if (idCancionActual !== null) {
+            return idCancionActual;
         }
-        const valor = idInput.value.trim();
-        if (!valor) {
-            return '';
-        }
-        const numero = Number(valor);
-        if (!Number.isInteger(numero) || numero <= 0) {
-            alert('El ID de canción debe ser un número entero positivo.');
-            return '';
-        }
-        return String(numero);
+        return null;
     }
 
     function conectarY(callback) {
+        if (typeof callback === 'function') {
+            if (clienteChat && clienteChat.connected) {
+                callback();
+                return;
+            }
+            pendingConnectionCallbacks.push(callback);
+        }
+
         if (clienteChat && clienteChat.connected) {
-            callback();
+            while (pendingConnectionCallbacks.length) {
+                const cb = pendingConnectionCallbacks.shift();
+                try { cb(); } catch (err) { console.error(err); }
+            }
+            return;
+        }
+
+        if (isConnecting) {
             return;
         }
 
         const nickname = obtenerNickname();
         if (!nickname) {
             alert('Ingresa un nickname para conectarte.');
+            pendingConnectionCallbacks.length = 0;
             return;
         }
 
         nicknamePropio = nickname;
         if (typeof SockJS === 'undefined' || typeof Stomp === 'undefined') {
             alert('Las librerías SockJS/STOMP no se cargaron correctamente. Verifica las etiquetas de script.');
+            pendingConnectionCallbacks.length = 0;
             return;
         }
 
         const socket = new SockJS(WS_ENDPOINT);
         clienteChat = Stomp.over(socket);
+        isConnecting = true;
 
         clienteChat.connect({ nickname }, () => {
+            isConnecting = false;
             actualizarEstadoControles();
-            callback();
+            while (pendingConnectionCallbacks.length) {
+                const cb = pendingConnectionCallbacks.shift();
+                try { cb(); } catch (err) { console.error(err); }
+            }
         }, (error) => {
+            isConnecting = false;
+            pendingConnectionCallbacks.length = 0;
             console.error('Error al conectar:', error);
             alert('No se pudo establecer la conexión con el servidor de reacciones.');
         });
@@ -138,21 +150,25 @@
         suscripcionesActivas = [];
     }
 
-    function toggleReproduccion() {
-        const idCancion = obtenerIdCancion();
-        if (!idCancion) {
+    function conectarYSuscribirse(idCancion, callback, force = false) {
+        if (idCancion === null) {
             return;
         }
-
         conectarY(() => {
-            if (idCancionActual !== idCancion) {
-                idCancionActual = idCancion;
-                suscribirseACanales(idCancionActual);
+            const debeResuscribirse = force || idCancionActual !== idCancion || suscripcionesActivas.length === 0;
+            idCancionActual = idCancion;
+            if (debeResuscribirse) {
+                suscribirseACanales(idCancion);
             }
+            if (typeof callback === 'function') {
+                callback();
+            }
+        });
+    }
 
-            if (reproduciendoCancion) {
-                detenerReproduccion();
-            } else {
+    function iniciarReproduccionAuto(idCancion) {
+        conectarYSuscribirse(idCancion, () => {
+            if (!reproduciendoCancion) {
                 iniciarReproduccion();
             }
         });
@@ -184,13 +200,13 @@
     }
 
     function avisarPlay(estado) {
-        if (!clienteChat || !clienteChat.connected || !idCancionActual) {
+        if (!clienteChat || !clienteChat.connected || idCancionActual === null) {
             return;
         }
 
         const payload = {
             nickname: nicknamePropio,
-            idCancion: Number(idCancionActual),
+            idCancion: idCancionActual,
             reproduciendo: estado
         };
 
@@ -198,7 +214,7 @@
     }
 
     function enviarReaccionPrivada(tipo) {
-        if (!clienteChat || !clienteChat.connected || !reproduciendoCancion) {
+        if (!clienteChat || !clienteChat.connected || !reproduciendoCancion || idCancionActual === null) {
             alert('Debes estar conectado y reproduciendo una canción para enviar reacciones.');
             return;
         }
@@ -209,7 +225,7 @@
 
         const payload = {
             nicknameOrigen: nicknamePropio,
-            idCancion: Number(idCancionActual),
+            idCancion: idCancionActual,
             reaction: tipo,
             contenido: emoji
         };
@@ -269,5 +285,71 @@
         burbuja.addEventListener('animationend', () => {
             burbuja.remove();
         });
+    }
+
+    function inferirIdDesdeTitulo(titulo) {
+        if (!titulo) {
+            return null;
+        }
+        const normalizado = titulo.trim().toLowerCase();
+        if (Object.prototype.hasOwnProperty.call(KNOWN_TITLE_TO_ID, normalizado)) {
+            return KNOWN_TITLE_TO_ID[normalizado];
+        }
+        const match = normalizado.match(/(\d+)/);
+        return match ? parseInt(match[1], 10) : null;
+    }
+
+    function setCancionDesdeTitulo(titulo) {
+        const id = inferirIdDesdeTitulo(titulo);
+        if (!id) {
+            console.warn('No se pudo inferir el id de la canción para reacciones.', titulo);
+            return null;
+        }
+        conectarYSuscribirse(id, undefined, true);
+        return id;
+    }
+
+    function handleAudioPlay() {
+        if (idCancionActual === null) {
+            const tituloInput = document.getElementById('song-title');
+            if (tituloInput && tituloInput.value) {
+                setCancionDesdeTitulo(tituloInput.value);
+            }
+        }
+
+        if (idCancionActual === null) {
+            console.warn('No hay id de canción para sincronizar reproducciones.');
+            return;
+        }
+
+        iniciarReproduccionAuto(idCancionActual);
+    }
+
+    function handleAudioPause() {
+        if (reproduciendoCancion) {
+            detenerReproduccion();
+        }
+    }
+
+    function startPlaybackFlow(titulo) {
+        let id = null;
+        if (titulo) {
+            id = setCancionDesdeTitulo(titulo);
+        }
+        if (id === null) {
+            id = idCancionActual ?? obtenerIdCancion();
+        }
+        if (id === null) {
+            console.warn('No fue posible iniciar la reproducción automática: falta id de canción.');
+            return;
+        }
+        iniciarReproduccionAuto(id);
+    }
+
+    if (typeof window !== 'undefined') {
+        window.__reaccionesIntegration = {
+            setCancionDesdeTitulo,
+            startPlaybackFlow
+        };
     }
 })();

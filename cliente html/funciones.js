@@ -1,6 +1,9 @@
 // funcion.js - wrapper simple para llamar a la implementación del streaming
 
 function pedirCancion(titulo, formato) {
+    if (typeof window !== 'undefined' && window.__reaccionesIntegration && typeof window.__reaccionesIntegration.startPlaybackFlow === 'function') {
+        window.__reaccionesIntegration.startPlaybackFlow(titulo);
+    }
     // Prioridad de implementaciones conocidas
     if (typeof window.iniciar_streaming_cancion === 'function') {
         return window.iniciar_streaming_cancion(titulo, formato);
