@@ -1,11 +1,13 @@
 .reactions-app {
-    margin-top: 48px;
-    padding: 32px 24px 40px;
-    border-radius: 32px;
-    background: #f0f4ff;
-    color: #1c3060;
-    font-family: "Segoe UI", Arial, sans-serif;
-    box-shadow: 0 15px 45px rgba(28, 48, 96, 0.15);
+    margin-top: 30px;
+    padding: 40px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    color: #ffffff;
+    font-family: 'Inter', "Segoe UI", Arial, sans-serif;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4);
 }
 
 .reactions-app * {
@@ -31,19 +33,36 @@
 
 .reactions-app .nickname-input {
     display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 1.05rem;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 1rem;
+}
+
+.reactions-app .nickname-input label {
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .reactions-app .nickname-input input {
-    width: 260px;
-    padding: 10px 14px;
+    width: 100%;
+    max-width: 350px;
+    padding: 12px 18px;
     font-size: 1rem;
-    border: 2px solid #7aa7ff;
-    border-radius: 10px;
-    background: #fff;
-    color: #1c3060;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.95);
+    color: #2d3748;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.reactions-app .nickname-input input:focus {
+    outline: none;
+    border-color: white;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+    background: white;
 }
 
 .reactions-app .content-grid {
@@ -53,19 +72,28 @@
 }
 
 .reactions-app .panel {
-    background: linear-gradient(135deg, #5b9bd5, #467ec7);
+    background: rgba(255, 255, 255, 0.15);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     color: #fff;
-    border-radius: 28px;
-    padding: 28px;
+    border-radius: 20px;
+    padding: 30px;
     text-align: center;
     min-height: 220px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 20px;
-    line-height: 1.4;
-    font-size: 1rem;
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+    line-height: 1.6;
+    font-size: 0.95rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.reactions-app .panel:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
 }
 
 .reactions-app .player-panel {
@@ -81,8 +109,9 @@
     overflow: hidden;
     min-height: 140px;
     width: 100%;
-    border-radius: 18px;
-    background: rgba(255, 255, 255, 0.12);
+    border-radius: 16px;
+    background: rgba(0, 0, 0, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .reactions-app .bubble {
@@ -120,14 +149,23 @@
 }
 
 .reactions-app .destination-input {
-    flex: 1 1 260px;
-    border-radius: 999px;
-    border: none;
+    width: 100%;
+    border-radius: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
     padding: 12px 18px;
     font-size: 1rem;
-    color: #1c3060;
-    background: #fff;
-    box-shadow: 0 4px 10px rgba(17, 48, 94, 0.15);
+    color: #2d3748;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.reactions-app .destination-input:focus {
+    outline: none;
+    border-color: white;
+    background: white;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .reactions-app .reaction-buttons {
@@ -138,15 +176,15 @@
 }
 
 .reactions-app .reaction-btn {
-    font-size: 1.8rem;
-    width: 56px;
-    height: 56px;
+    font-size: 2rem;
+    width: 64px;
+    height: 64px;
     border-radius: 50%;
-    border: none;
+    border: 2px solid rgba(255, 255, 255, 0.3);
     cursor: pointer;
-    background: #fff;
-    box-shadow: 0 4px 12px rgba(17, 48, 94, 0.2);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
 }
 
 .reactions-app .reaction-btn:disabled {
@@ -156,8 +194,14 @@
 }
 
 .reactions-app .reaction-btn:not(:disabled):hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(17, 48, 94, 0.3);
+    transform: translateY(-6px) scale(1.1);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+    background: white;
+    border-color: white;
+}
+
+.reactions-app .reaction-btn:not(:disabled):active {
+    transform: translateY(-2px) scale(1.05);
 }
 
 .reactions-app .bottom-grid .panel {

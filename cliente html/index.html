@@ -1,90 +1,374 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Cliente Audio gRPC-Web</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cliente Streaming & Reacciones</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: sans-serif; margin: 20px; }
-        #log { border: 1px solid #ccc; padding: 10px; height: 150px; overflow-y: scroll; margin-top: 10px; }
-        .success { color: green; }
-        .error { color: red; }
-        .hidden { display: none; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #2d3748;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #718096;
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        .streaming-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 2px;
+        }
+
+        .controls-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto auto;
+            gap: 15px;
+            align-items: end;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        label {
+            font-weight: 500;
+            font-size: 0.875rem;
+            color: #4a5568;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input[type="text"],
+        select {
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        input[type="text"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn-primary {
+            padding: 12px 32px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            align-self: end;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+        }
+
+        .btn-primary:disabled:hover {
+            transform: none;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+        }
+
+        #audio-player {
+            width: 100%;
+            margin-top: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        #audio-player.hidden {
+            display: none;
+        }
+
+        .status-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 20px;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-radius: 12px;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #48bb78;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        #log {
+            background: #1a202c;
+            border-radius: 12px;
+            padding: 20px;
+            height: 200px;
+            overflow-y: auto;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+
+        #log::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #log::-webkit-scrollbar-track {
+            background: #2d3748;
+            border-radius: 4px;
+        }
+
+        #log::-webkit-scrollbar-thumb {
+            background: #4a5568;
+            border-radius: 4px;
+        }
+
+        #log > div {
+            color: #e2e8f0;
+            margin-bottom: 8px;
+            padding: 4px 0;
+        }
+
+        #log .success {
+            color: #48bb78;
+        }
+
+        #log .error {
+            color: #f56565;
+        }
+
+        @media (max-width: 768px) {
+            .controls-grid {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .streaming-section {
+                padding: 20px;
+            }
+        }
+
+        .log-section {
+            margin-top: 20px;
+        }
+
+        .reactions-title {
+            color: white;
+            margin-bottom: 25px;
+        }
+
+        .panel-title {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .info-text {
+            opacity: 0.9;
+            line-height: 1.5;
+        }
+
+        .destination-wrapper {
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .destination-label {
+            color: white;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+            display: block;
+        }
     </style>
     <link rel="stylesheet" href="./reacciones.css" />
 </head>
 <body>
-    <h1>Transmisión de Audio con gRPC-Web </h1>
-    <p>La conexión se intentará al servidor ubicado en localhost:8080</p>
-    <audio id="audio-player" controls class="hidden"></audio>
+    <div class="container">
+        <header>
+            <h1>🎵 Streaming & Reacciones en Vivo</h1>
+            <p class="subtitle">Reproduce música y comparte reacciones con otros usuarios en tiempo real</p>
+        </header>
 
-    <div>
-        <label for="song-title">Título de la canción:</label>
-        <input id="song-title" type="text" placeholder="cancion1.mp3" value="cancion1.mp3" />
+        <section class="streaming-section">
+            <h2 class="section-title">Reproductor de Audio</h2>
+            
+            <div class="status-bar">
+                <div class="status-indicator"></div>
+                <span id="status">Listo para reproducir</span>
+            </div>
 
-        <label for="format-select">Formato:</label>
-        <select id="format-select">
-            <option value="mp3">mp3</option>
-            <option value="wav">wav</option>
-            <option value="m4a">m4a</option>
-        </select>
-    </div>
-
-    <button onclick="pedirCancion(document.getElementById('song-title').value || 'cancion1.mp3', document.getElementById('format-select').value || 'mp3')">Pedir Canción</button>
-   
-    <h3 id="status">Esperando petición...</h3>
-    <div id="log"></div>
-
-    <section class="reactions-app">
-        <div class="app">
-            <header>
-                <div class="nickname-input">
-                    <label for="nicknameOrigen">Nickname del usuario:</label>
-                    <input type="text" id="nicknameOrigen" placeholder="Escribe tu nickname" />
+            <div class="controls-grid">
+                <div class="form-group">
+                    <label for="nicknameOrigen">Tu Nickname</label>
+                    <input id="nicknameOrigen" type="text" placeholder="Ingresa tu nombre de usuario" oninput="validarNickname()" />
                 </div>
-            </header>
 
-            <section class="content-grid">
-                <article class="panel player-panel">
-                    <p>Estado del reproductor para compartir con otros oyentes</p>
-                    <div class="player-actions">
-                        <small>La reproducción se sincroniza automáticamente al pedir una canción.</small>
+                <div class="form-group">
+                    <label for="song-title">Título de la canción</label>
+                    <input id="song-title" type="text" placeholder="cancion1.mp3" value="cancion1.mp3" />
+                </div>
+
+                <div class="form-group">
+                    <label for="format-select">Formato</label>
+                    <select id="format-select">
+                        <option value="mp3">MP3</option>
+                        <option value="wav">WAV</option>
+                        <option value="m4a">M4A</option>
+                    </select>
+                </div>
+
+                <button id="btn-reproducir" class="btn-primary" onclick="pedirCancion(document.getElementById('song-title').value || 'cancion1.mp3', document.getElementById('format-select').value || 'mp3')" disabled>🎵 Reproducir</button>
+            </div>
+
+            <audio id="audio-player" controls class="hidden"></audio>
+
+            <div class="form-group log-section">
+                <label for="log">Registro de actividad</label>
+                <div id="log"></div>
+            </div>
+        </section>
+
+        <section class="reactions-app">
+            <div class="app">
+                <h2 class="section-title reactions-title">
+                    💬 Reacciones en Tiempo Real
+                </h2>
+
+                <section class="content-grid">
+                    <article class="panel list-panel">
+                        <h3 class="panel-title">▶️ Usuarios Reproduciendo</h3>
+                        <div id="usuariosReproduciendo" class="bubble-wrapper"></div>
+                    </article>
+
+                    <article class="panel reactions-panel">
+                        <h3 class="panel-title">💖 Reacciones Recibidas</h3>
+                        <div id="reaccionesUsuarios" class="bubble-wrapper"></div>
+                    </article>
+
+                    <article class="panel list-panel">
+                        <h3 class="panel-title">⏸️ Usuarios que Detienen</h3>
+                        <div id="usuariosDetenidos" class="bubble-wrapper"></div>
+                    </article>
+                </section>
+
+                <section class="reaction-row">
+                    <div class="reaction-buttons">
+                        <button class="reaction-btn" data-reaction="like" title="Me gusta" disabled>👍</button>
+                        <button class="reaction-btn" data-reaction="love" title="Me encanta" disabled>❤️</button>
+                        <button class="reaction-btn" data-reaction="angry" title="No me gusta" disabled>😡</button>
+                        <button class="reaction-btn" data-reaction="fun" title="Me divierte" disabled>😄</button>
                     </div>
-                </article>
-
-                <article class="panel list-panel">
-                    <p>Usuarios que inician reproducción</p>
-                    <div id="usuariosReproduciendo" class="bubble-wrapper"></div>
-                </article>
-            </section>
-
-            <section class="reaction-row">
-                <input type="text" id="nicknameDestino" class="destination-input" placeholder="Nickname destino (opcional)" />
-                <div class="reaction-buttons">
-                    <button class="reaction-btn" data-reaction="like" title="Me gusta" disabled>👍</button>
-                    <button class="reaction-btn" data-reaction="love" title="Me encanta" disabled>❤️</button>
-                    <button class="reaction-btn" data-reaction="angry" title="No me gusta" disabled>😡</button>
-                    <button class="reaction-btn" data-reaction="fun" title="Me divierte" disabled>😄</button>
-                </div>
-            </section>
-
-            <section class="content-grid bottom-grid">
-                <article class="panel reactions-panel">
-                    <p>Reacciones recibidas</p>
-                    <div id="reaccionesUsuarios" class="bubble-wrapper"></div>
-                </article>
-
-                <article class="panel list-panel">
-                    <p>Usuarios que detienen la reproducción</p>
-                    <div id="usuariosDetenidos" class="bubble-wrapper"></div>
-                </article>
-            </section>
-        </div>
-    </section>
+                </section>
+            </div>
+        </section>
+    </div>
 
     <script src="./bundle.js"></script>
     <script src="./funciones.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
     <script src="./reacciones.js"></script>
-    
+    <script>
+        function validarNickname() {
+            const nickname = document.getElementById('nicknameOrigen').value.trim();
+            const btnReproducir = document.getElementById('btn-reproducir');
+            btnReproducir.disabled = nickname.length === 0;
+        }
+
+        // Validar al cargar la página
+        window.addEventListener('DOMContentLoaded', validarNickname);
+    </script>
 </body>
 </html>
