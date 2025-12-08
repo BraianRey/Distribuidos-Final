@@ -197,6 +197,10 @@
         reproduciendoCancion = false;
         actualizarEstadoControles();
         mostrarBurbuja('usuariosDetenidos', `${nicknamePropio} detuvo la canción`, 'stop');
+        
+        // Desuscribirse de todos los canales al pausar
+        liberarSuscripciones();
+        console.log('Desuscrito de reacciones y notificaciones al pausar.');
     }
 
     function avisarPlay(estado) {
@@ -240,6 +244,11 @@
     }
 
     function manejarEstadoReproduccion(message) {
+        // No procesar mensajes si no estamos reproduciendo
+        if (!reproduciendoCancion) {
+            return;
+        }
+        
         try {
             const evento = JSON.parse(message.body);
             if (evento.nickname === nicknamePropio) {
@@ -257,6 +266,11 @@
     }
 
     function manejarReaccion(message) {
+        // No procesar reacciones si no estamos reproduciendo
+        if (!reproduciendoCancion) {
+            return;
+        }
+        
         try {
             const evento = JSON.parse(message.body);
             if (evento.nicknameDestino && evento.nicknameDestino !== nicknamePropio) {
@@ -315,7 +329,10 @@
             return;
         }
 
-        iniciarReproduccionAuto(idCancionActual);
+        // Volver a suscribirse al reanudar la reproducción
+        conectarYSuscribirse(idCancionActual, () => {
+            iniciarReproduccionAuto(idCancionActual);
+        }, true);
     }
 
     function handleAudioPause() {

@@ -406,4 +406,40 @@
   "montoRetirado" : 10.0,
   "nombreCliente" : "si",
   "fecha" : "2025-12-07T10:44:40.106916506"
+}, {
+  "tipo" : "generacion",
+  "token" : "d3e786bf-3f44-48db-b594-b76511d701cd",
+  "costoGeneracion" : 10.0,
+  "nombreCliente" : "jost",
+  "fecha" : "2025-12-08T09:59:38.430397611"
+}, {
+  "tipo" : "pago",
+  "token" : "d3e786bf-3f44-48db-b594-b76511d701cd",
+  "montoRetirado" : 10.0,
+  "nombreCliente" : "jost",
+  "fecha" : "2025-12-08T09:59:38.495764253"
+}, {
+  "tipo" : "generacion",
+  "token" : "0bfeba58-9f7b-49bf-8107-91cfb9f559e1",
+  "costoGeneracion" : 10.0,
+  "nombreCliente" : "jost",
+  "fecha" : "2025-12-08T09:59:48.676014272"
+}, {
+  "tipo" : "pago",
+  "token" : "0bfeba58-9f7b-49bf-8107-91cfb9f559e1",
+  "montoRetirado" : 10.0,
+  "nombreCliente" : "jost",
+  "fecha" : "2025-12-08T09:59:48.697268528"
+}, {
+  "tipo" : "generacion",
+  "token" : "14eb2fbb-0f7e-4228-9f47-070b842941a5",
+  "costoGeneracion" : 10.0,
+  "nombreCliente" : "dark",
+  "fecha" : "2025-12-08T10:00:18.758812507"
+}, {
+  "tipo" : "pago",
+  "token" : "14eb2fbb-0f7e-4228-9f47-070b842941a5",
+  "montoRetirado" : 10.0,
+  "nombreCliente" : "dark",
+  "fecha" : "2025-12-08T10:00:18.783567529"
 } ]
