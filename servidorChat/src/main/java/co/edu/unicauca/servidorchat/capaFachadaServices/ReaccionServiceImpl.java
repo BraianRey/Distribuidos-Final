@@ -100,8 +100,13 @@ public class ReaccionServiceImpl implements ReaccionServiceInt {
     private void notificarError(MensajePrivadoDTO mensaje, String contenido) {
         MensajePrivadoDTO error = new MensajePrivadoDTO();
         error.setNicknameOrigen("server");
+        error.setNicknameDestino(mensaje.getNicknameOrigen());
         error.setIdCancion(mensaje.getIdCancion());
         error.setContenido(contenido);
-        simpMessagingTemplate.convertAndSend("/chatPrivado/" + mensaje.getIdCancion(), error);
+        
+        // Enviar solo al usuario específico usando un canal personalizado por nickname
+        String canalPrivado = "/errors/" + mensaje.getNicknameOrigen();
+        simpMessagingTemplate.convertAndSend(canalPrivado, error);
+        System.out.println("📤 Enviando error a: " + canalPrivado + " -> " + contenido);
     }
 }

@@ -10,9 +10,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
   @Override
   public void configureMessageBroker(MessageBrokerRegistry config) {
-    config.enableSimpleBroker("/chatGrupal", "/chatPrivado", "/avisarPlay");
+    config.enableSimpleBroker("/chatGrupal", "/chatPrivado", "/avisarPlay", "/errors");
     config.setApplicationDestinationPrefixes("/apiChat");
-    config.setUserDestinationPrefix("/apiChatPrivado");
+    config.setUserDestinationPrefix("/user");
   }
 
   @Override

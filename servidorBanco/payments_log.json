@@ -1,0 +1,337 @@
+[ {
+  "costoGeneracion" : 10.0,
+  "token" : "53d3db97-c77c-44b8-953c-4ec26010b16a",
+  "tipo" : "generacion",
+  "fecha" : "2025-12-08T14:26:07.111563531",
+  "nombreCliente" : "yerzoncz"
+}, {
+  "costoGeneracion" : 10.0,
+  "token" : "a24c27b8-598d-432f-91f6-6a0af646988e",
+  "tipo" : "generacion",
+  "fecha" : "2025-12-08T14:26:12.572885600",
+  "nombreCliente" : "yerzoncz"
+}, {
+  "montoRetirado" : 10.0,
+  "token" : "a24c27b8-598d-432f-91f6-6a0af646988e",
+  "tipo" : "pago",
+  "fecha" : "2025-12-08T14:26:12.589582251",
+  "nombreCliente" : "yerzoncz"
+}, {
+  "costoGeneracion" : 10.0,
+  "token" : "5cbba229-b90e-4bcb-a6af-4ae677a6bb24",
+  "tipo" : "generacion",
+  "fecha" : "2025-12-08T14:26:15.819036292",
+  "nombreCliente" : "yerzoncz"
+}, {
+  "montoRetirado" : 10.0,
+  "token" : "5cbba229-b90e-4bcb-a6af-4ae677a6bb24",
+  "tipo" : "pago",
+  "fecha" : "2025-12-08T14:26:15.831123973",
+  "nombreCliente" : "yerzoncz"
+}, {
+  "montoRetirado" : 10.0,
+  "token" : "53d3db97-c77c-44b8-953c-4ec26010b16a",
+  "tipo" : "pago",
+  "fecha" : "2025-12-08T14:26:17.268398913",
+  "nombreCliente" : "yerzoncz"
+}, {
+  "costoGeneracion" : 10.0,
+  "token" : "9159c800-311e-4160-b0e9-7b0ee9efd2d6",
+  "tipo" : "generacion",
+  "fecha" : "2025-12-08T14:32:28.727506737",
+  "nombreCliente" : "danilo"
+}, {
+  "montoRetirado" : 10.0,
+  "token" : "9159c800-311e-4160-b0e9-7b0ee9efd2d6",
+  "tipo" : "pago",
+  "fecha" : "2025-12-08T14:32:28.808884983",
+  "nombreCliente" : "danilo"
+}, {
+  "costoGeneracion" : 10.0,
+  "token" : "8b41aef5-69f8-40d2-b04f-29c4d3a3aeaf",
+  "tipo" : "generacion",
+  "fecha" : "2025-12-08T14:32:30.923367929",
+  "nombreCliente" : "danilo"
+}, {
+  "montoRetirado" : 10.0,
+  "token" : "8b41aef5-69f8-40d2-b04f-29c4d3a3aeaf",
+  "tipo" : "pago",
+  "fecha" : "2025-12-08T14:32:30.971041069",
+  "nombreCliente" : "danilo"
+}, {
+  "costoGeneracion" : 10.0,
+  "token" : "a823c502-0656-4af6-9067-30b382b57ddf",
+  "tipo" : "generacion",
+  "fecha" : "2025-12-08T14:32:33.486449540",
+  "nombreCliente" : "danilo"
+}, {
+  "montoRetirado" : 10.0,
+  "token" : "a823c502-0656-4af6-9067-30b382b57ddf",
+  "tipo" : "pago",
+  "fecha" : "2025-12-08T14:32:33.498936283",
+  "nombreCliente" : "danilo"
+}, {
+  "costoGeneracion" : 10.0,
+  "token" : "11c48bf5-66db-4f2f-b8a8-0042c2ac2b95",
+  "tipo" : "generacion",
+  "fecha" : "2025-12-08T14:32:35.969307941",
+  "nombreCliente" : "danilo"
+}, {
+  "montoRetirado" : 10.0,
+  "token" : "11c48bf5-66db-4f2f-b8a8-0042c2ac2b95",
+  "tipo" : "pago",
+  "fecha" : "2025-12-08T14:32:35.980429454",
+  "nombreCliente" : "danilo"
+}, {
+  "costoGeneracion" : 10.0,
+  "token" : "9ab9ab45-af80-48d8-93c3-dd648d14359f",
+  "tipo" : "generacion",
+  "fecha" : "2025-12-08T14:32:38.028866523",
+  "nombreCliente" : "danilo"
+}, {
+  "montoRetirado" : 10.0,
+  "token" : "9ab9ab45-af80-48d8-93c3-dd648d14359f",
+  "tipo" : "pago",
+  "fecha" : "2025-12-08T14:32:38.061446193",
+  "nombreCliente" : "danilo"
+}, {
+  "costoGeneracion" : 10.0,
+  "token" : "278ec5f5-432f-46e2-b036-f54b5b1047d1",
+  "tipo" : "generacion",
+  "fecha" : "2025-12-08T14:42:40.316512906",
+  "nombreCliente" : "spreen"
+}, {
+  "montoRetirado" : 10.0,
+  "token" : "278ec5f5-432f-46e2-b036-f54b5b1047d1",
+  "tipo" : "pago",
+  "fecha" : "2025-12-08T14:42:40.333674590",
+  "nombreCliente" : "spreen"
+}, {
+  "costoGeneracion" : 10.0,
+  "token" : "9156891c-be4c-413e-980f-ea33924f923c",
+  "tipo" : "generacion",
+  "fecha" : "2025-12-08T14:42:40.968745714",
+  "nombreCliente" : "spreen"
+}, {
+  "montoRetirado" : 10.0,
+  "token" : "9156891c-be4c-413e-980f-ea33924f923c",
+  "tipo" : "pago",
+  "fecha" : "2025-12-08T14:42:40.996859643",
+  "nombreCliente" : "spreen"
+}, {
+  "costoGeneracion" : 10.0,
+  "token" : "1d5e11ee-da0a-4fb1-a8fc-408e5d419aca",
+  "tipo" : "generacion",
+  "fecha" : "2025-12-08T14:42:41.157447849",
+  "nombreCliente" : "spreen"
+}, {
+  "montoRetirado" : 10.0,
+  "token" : "1d5e11ee-da0a-4fb1-a8fc-408e5d419aca",
+  "tipo" : "pago",
+  "fecha" : "2025-12-08T14:42:41.170244433",
+  "nombreCliente" : "spreen"
+}, {
+  "costoGeneracion" : 10.0,
+  "token" : "35c10bd3-5808-4064-b80d-60bbbb18835d",
+  "tipo" : "generacion",
+  "fecha" : "2025-12-08T14:42:41.333075162",
+  "nombreCliente" : "spreen"
+}, {
+  "montoRetirado" : 10.0,
+  "token" : "35c10bd3-5808-4064-b80d-60bbbb18835d",
+  "tipo" : "pago",
+  "fecha" : "2025-12-08T14:42:41.363817373",
+  "nombreCliente" : "spreen"
+}, {
+  "costoGeneracion" : 10.0,
+  "token" : "c0c1fe1f-5582-4f98-a1a1-9e8fc286fae5",
+  "tipo" : "generacion",
+  "fecha" : "2025-12-08T14:42:41.510202799",
+  "nombreCliente" : "spreen"
+}, {
+  "montoRetirado" : 10.0,
+  "token" : "c0c1fe1f-5582-4f98-a1a1-9e8fc286fae5",
+  "tipo" : "pago",
+  "fecha" : "2025-12-08T14:42:41.532903036",
+  "nombreCliente" : "spreen"
+}, {
+  "costoGeneracion" : 10.0,
+  "token" : "bf56aee6-78fc-4a16-a37a-9113df941a09",
+  "tipo" : "generacion",
+  "fecha" : "2025-12-08T14:44:09.516111785",
+  "nombreCliente" : "SETH"
+}, {
+  "montoRetirado" : 10.0,
+  "token" : "bf56aee6-78fc-4a16-a37a-9113df941a09",
+  "tipo" : "pago",
+  "fecha" : "2025-12-08T14:44:09.554172615",
+  "nombreCliente" : "SETH"
+}, {
+  "costoGeneracion" : 10.0,
+  "token" : "834bb827-7e01-4ec9-9d4c-adb0b5b5621a",
+  "tipo" : "generacion",
+  "fecha" : "2025-12-08T14:44:12.593900008",
+  "nombreCliente" : "SETH"
+}, {
+  "montoRetirado" : 10.0,
+  "token" : "834bb827-7e01-4ec9-9d4c-adb0b5b5621a",
+  "tipo" : "pago",
+  "fecha" : "2025-12-08T14:44:12.610212723",
+  "nombreCliente" : "SETH"
+}, {
+  "costoGeneracion" : 10.0,
+  "token" : "2e67967b-bec0-4030-ad56-47aa9b77a097",
+  "tipo" : "generacion",
+  "fecha" : "2025-12-08T14:44:14.692034912",
+  "nombreCliente" : "SETH"
+}, {
+  "montoRetirado" : 10.0,
+  "token" : "2e67967b-bec0-4030-ad56-47aa9b77a097",
+  "tipo" : "pago",
+  "fecha" : "2025-12-08T14:44:14.702965356",
+  "nombreCliente" : "SETH"
+}, {
+  "costoGeneracion" : 10.0,
+  "token" : "95508134-856f-475d-ab3a-712350bdc56e",
+  "tipo" : "generacion",
+  "fecha" : "2025-12-08T14:44:16.023410387",
+  "nombreCliente" : "SETH"
+}, {
+  "montoRetirado" : 10.0,
+  "token" : "95508134-856f-475d-ab3a-712350bdc56e",
+  "tipo" : "pago",
+  "fecha" : "2025-12-08T14:44:16.033119325",
+  "nombreCliente" : "SETH"
+}, {
+  "costoGeneracion" : 10.0,
+  "token" : "b0fcd216-0ef0-46fd-84f4-84d59905895b",
+  "tipo" : "generacion",
+  "fecha" : "2025-12-08T14:44:17.370552666",
+  "nombreCliente" : "SETH"
+}, {
+  "montoRetirado" : 10.0,
+  "token" : "b0fcd216-0ef0-46fd-84f4-84d59905895b",
+  "tipo" : "pago",
+  "fecha" : "2025-12-08T14:44:17.382043929",
+  "nombreCliente" : "SETH"
+}, {
+  "costoGeneracion" : 10.0,
+  "token" : "c4d89aa9-62b6-423c-983f-c759849f10a9",
+  "tipo" : "generacion",
+  "fecha" : "2025-12-08T14:47:40.710210697",
+  "nombreCliente" : "walker"
+}, {
+  "montoRetirado" : 10.0,
+  "token" : "c4d89aa9-62b6-423c-983f-c759849f10a9",
+  "tipo" : "pago",
+  "fecha" : "2025-12-08T14:47:40.876451711",
+  "nombreCliente" : "walker"
+}, {
+  "costoGeneracion" : 10.0,
+  "token" : "efed1b0d-b4f4-450e-b6d7-dc89593fd7d2",
+  "tipo" : "generacion",
+  "fecha" : "2025-12-08T14:47:41.748776941",
+  "nombreCliente" : "walker"
+}, {
+  "montoRetirado" : 10.0,
+  "token" : "efed1b0d-b4f4-450e-b6d7-dc89593fd7d2",
+  "tipo" : "pago",
+  "fecha" : "2025-12-08T14:47:41.763685331",
+  "nombreCliente" : "walker"
+}, {
+  "costoGeneracion" : 10.0,
+  "token" : "dfa57066-6218-4325-985a-9dc2aa0978c5",
+  "tipo" : "generacion",
+  "fecha" : "2025-12-08T14:47:43.183007587",
+  "nombreCliente" : "walker"
+}, {
+  "montoRetirado" : 10.0,
+  "token" : "dfa57066-6218-4325-985a-9dc2aa0978c5",
+  "tipo" : "pago",
+  "fecha" : "2025-12-08T14:47:43.212102203",
+  "nombreCliente" : "walker"
+}, {
+  "costoGeneracion" : 10.0,
+  "token" : "ce13233c-87c7-470f-98a4-b892d980bc34",
+  "tipo" : "generacion",
+  "fecha" : "2025-12-08T14:47:44.353998",
+  "nombreCliente" : "walker"
+}, {
+  "montoRetirado" : 10.0,
+  "token" : "ce13233c-87c7-470f-98a4-b892d980bc34",
+  "tipo" : "pago",
+  "fecha" : "2025-12-08T14:47:44.377965907",
+  "nombreCliente" : "walker"
+}, {
+  "costoGeneracion" : 10.0,
+  "token" : "c3fd5eec-5e58-4553-af9c-0739722d2538",
+  "tipo" : "generacion",
+  "fecha" : "2025-12-08T14:47:46.567761881",
+  "nombreCliente" : "walker"
+}, {
+  "montoRetirado" : 10.0,
+  "token" : "c3fd5eec-5e58-4553-af9c-0739722d2538",
+  "tipo" : "pago",
+  "fecha" : "2025-12-08T14:47:46.579874187",
+  "nombreCliente" : "walker"
+}, {
+  "costoGeneracion" : 10.0,
+  "token" : "30065619-3343-4cd0-9024-e9eec7c8f996",
+  "tipo" : "generacion",
+  "fecha" : "2025-12-08T14:51:26.929647723",
+  "nombreCliente" : "bale"
+}, {
+  "montoRetirado" : 10.0,
+  "token" : "30065619-3343-4cd0-9024-e9eec7c8f996",
+  "tipo" : "pago",
+  "fecha" : "2025-12-08T14:51:26.940285869",
+  "nombreCliente" : "bale"
+}, {
+  "costoGeneracion" : 10.0,
+  "token" : "d097e759-5968-41d4-8672-d4561e23c588",
+  "tipo" : "generacion",
+  "fecha" : "2025-12-08T14:51:28.967556263",
+  "nombreCliente" : "bale"
+}, {
+  "montoRetirado" : 10.0,
+  "token" : "d097e759-5968-41d4-8672-d4561e23c588",
+  "tipo" : "pago",
+  "fecha" : "2025-12-08T14:51:28.978525081",
+  "nombreCliente" : "bale"
+}, {
+  "costoGeneracion" : 10.0,
+  "token" : "aa774981-add9-4e1f-9290-fa01311beced",
+  "tipo" : "generacion",
+  "fecha" : "2025-12-08T14:51:29.703868854",
+  "nombreCliente" : "bale"
+}, {
+  "montoRetirado" : 10.0,
+  "token" : "aa774981-add9-4e1f-9290-fa01311beced",
+  "tipo" : "pago",
+  "fecha" : "2025-12-08T14:51:29.715952113",
+  "nombreCliente" : "bale"
+}, {
+  "costoGeneracion" : 10.0,
+  "token" : "56194460-fb23-41ed-b245-9527dc09d7d9",
+  "tipo" : "generacion",
+  "fecha" : "2025-12-08T14:51:31.146149709",
+  "nombreCliente" : "bale"
+}, {
+  "montoRetirado" : 10.0,
+  "token" : "56194460-fb23-41ed-b245-9527dc09d7d9",
+  "tipo" : "pago",
+  "fecha" : "2025-12-08T14:51:31.154736686",
+  "nombreCliente" : "bale"
+}, {
+  "costoGeneracion" : 10.0,
+  "token" : "dbf71608-5d31-4574-9b49-e7cb2b32a1f2",
+  "tipo" : "generacion",
+  "fecha" : "2025-12-08T14:51:32.090029604",
+  "nombreCliente" : "bale"
+}, {
+  "montoRetirado" : 10.0,
+  "token" : "dbf71608-5d31-4574-9b49-e7cb2b32a1f2",
+  "tipo" : "pago",
+  "fecha" : "2025-12-08T14:51:32.100937091",
+  "nombreCliente" : "bale"
+} ]

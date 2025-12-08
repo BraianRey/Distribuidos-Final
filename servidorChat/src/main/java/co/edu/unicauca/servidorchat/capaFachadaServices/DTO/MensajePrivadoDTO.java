@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MensajePrivadoDTO {
     private String nicknameOrigen;
+    private String nicknameDestino;
     private int idCancion;
     private String contenido;
     private String reaction; // Tipo de reacción: like, love, angry, fun

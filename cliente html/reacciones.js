@@ -172,10 +172,16 @@
             return;
         }
 
+        // Suscribirse al canal de errores personal basado en el nickname
+        const canalErroresPersonal = '/errors/' + nicknamePropio;
+        
         suscripcionesActivas.push(
             clienteChat.subscribe(DESTINATIONS.playTopic(idCancion), manejarEstadoReproduccion),
-            clienteChat.subscribe(DESTINATIONS.reactionTopic(idCancion), manejarReaccion)
+            clienteChat.subscribe(DESTINATIONS.reactionTopic(idCancion), manejarReaccion),
+            clienteChat.subscribe(canalErroresPersonal, manejarErrorPersonal)
         );
+        
+        console.log('✅ Suscrito a canal de errores: ' + canalErroresPersonal);
     }
 
     function liberarSuscripciones() {
@@ -343,6 +349,19 @@
             mostrarBurbuja('reaccionesUsuarios', `${evento.nicknameOrigen}${destinoTexto}: ${emoji}`, 'reaction');
         } catch (error) {
             console.error('Error procesando reacción:', error);
+        }
+    }
+
+    function manejarErrorPersonal(message) {
+        try {
+            const evento = JSON.parse(message.body);
+            console.log('🔴 Error recibido del servidor:', evento);
+            console.warn('Error del servidor:', evento.contenido);
+            
+            // Mostrar error como burbuja animada en el panel de reacciones
+            mostrarBurbuja('reaccionesUsuarios', '⚠️ ' + evento.contenido, 'error');
+        } catch (error) {
+            console.error('Error procesando mensaje de error:', error);
         }
     }
 
