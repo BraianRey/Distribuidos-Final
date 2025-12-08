@@ -28,6 +28,9 @@
     let suscripcionesActivas = [];
     let isConnecting = false;
     const pendingConnectionCallbacks = [];
+    
+    // Set para mantener los usuarios activos (escuchando)
+    const usuariosActivos = new Set();
 
     document.addEventListener('DOMContentLoaded', () => {
         inicializarUI();
@@ -64,6 +67,36 @@
         document.querySelectorAll('.reaction-btn').forEach((boton) => {
             boton.disabled = !reproduciendoCancion;
         });
+    }
+
+    function actualizarListaUsuariosActivos() {
+        const contenedor = document.getElementById('listaUsuariosActivos');
+        if (!contenedor) return;
+
+        contenedor.innerHTML = '';
+
+        if (usuariosActivos.size === 0) {
+            const noUsersText = document.createElement('p');
+            noUsersText.className = 'no-users-text';
+            noUsersText.textContent = 'No hay usuarios escuchando esta canción';
+            contenedor.appendChild(noUsersText);
+        } else {
+            usuariosActivos.forEach((nickname) => {
+                const badge = document.createElement('div');
+                badge.className = 'user-badge';
+                
+                const icon = document.createElement('span');
+                icon.className = 'user-badge-icon';
+                icon.textContent = '🎧';
+                
+                const name = document.createElement('span');
+                name.textContent = nickname;
+                
+                badge.appendChild(icon);
+                badge.appendChild(name);
+                contenedor.appendChild(badge);
+            });
+        }
     }
 
     function obtenerNickname() {
@@ -183,6 +216,10 @@
         actualizarEstadoControles();
         avisarPlay(true);
         mostrarBurbuja('usuariosReproduciendo', `${nicknamePropio} inició la canción`, 'start');
+        
+        // Agregar usuario a la lista de activos
+        usuariosActivos.add(nicknamePropio);
+        actualizarListaUsuariosActivos();
     }
 
     function detenerReproduccion(silencioso = false) {
@@ -201,6 +238,10 @@
         // Desuscribirse de todos los canales al pausar
         liberarSuscripciones();
         console.log('Desuscrito de reacciones y notificaciones al pausar.');
+        
+        // Limpiar toda la lista de usuarios activos cuando se pausa
+        usuariosActivos.clear();
+        actualizarListaUsuariosActivos();
     }
 
     function avisarPlay(estado) {
@@ -244,11 +285,6 @@
     }
 
     function manejarEstadoReproduccion(message) {
-        // No procesar mensajes si no estamos reproduciendo
-        if (!reproduciendoCancion) {
-            return;
-        }
-        
         try {
             const evento = JSON.parse(message.body);
             if (evento.nickname === nicknamePropio) {
@@ -256,9 +292,34 @@
             }
 
             if (evento.reproduciendo === true) {
-                mostrarBurbuja('usuariosReproduciendo', `${evento.nickname} inició la canción`, 'start');
+                // Verificar si es un usuario nuevo o uno que ya estaba
+                const esUsuarioNuevo = !usuariosActivos.has(evento.nickname);
+                
+                // Agregar a la lista de usuarios activos
+                usuariosActivos.add(evento.nickname);
+                actualizarListaUsuariosActivos();
+                
+                // Solo mostrar burbuja si estamos reproduciendo Y es un usuario nuevo
+                if (reproduciendoCancion && esUsuarioNuevo) {
+                    mostrarBurbuja('usuariosReproduciendo', `${evento.nickname} inició la canción`, 'start');
+                }
+                
+                // Si estamos reproduciendo, responder con nuestro estado para que el nuevo usuario nos vea
+                // Solo responder si detectamos que es un usuario nuevo (para evitar loops)
+                if (reproduciendoCancion && esUsuarioNuevo && clienteChat && clienteChat.connected) {
+                    setTimeout(() => {
+                        avisarPlay(true);
+                    }, 100);
+                }
             } else if (evento.reproduciendo === false) {
-                mostrarBurbuja('usuariosDetenidos', `${evento.nickname} detuvo la canción`, 'stop');
+                // Remover de la lista de usuarios activos
+                usuariosActivos.delete(evento.nickname);
+                actualizarListaUsuariosActivos();
+                
+                // Solo mostrar burbuja si estamos reproduciendo
+                if (reproduciendoCancion) {
+                    mostrarBurbuja('usuariosDetenidos', `${evento.nickname} detuvo la canción`, 'stop');
+                }
             }
         } catch (error) {
             console.error('Error procesando evento de reproducción:', error);

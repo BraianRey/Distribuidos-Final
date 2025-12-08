@@ -442,4 +442,40 @@
   "montoRetirado" : 10.0,
   "nombreCliente" : "dark",
   "fecha" : "2025-12-08T10:00:18.783567529"
+}, {
+  "costoGeneracion" : 10.0,
+  "nombreCliente" : "sex",
+  "fecha" : "2025-12-08T11:02:39.074928497",
+  "tipo" : "generacion",
+  "token" : "0cc47dda-512c-410f-bf08-977e4c189f28"
+}, {
+  "costoGeneracion" : 10.0,
+  "nombreCliente" : "sex",
+  "fecha" : "2025-12-08T11:02:50.632956709",
+  "tipo" : "generacion",
+  "token" : "8afe0332-39ed-4328-b3ce-0232dd09f9e2"
+}, {
+  "montoRetirado" : 10.0,
+  "nombreCliente" : "sex",
+  "fecha" : "2025-12-08T11:02:50.675167676",
+  "tipo" : "pago",
+  "token" : "8afe0332-39ed-4328-b3ce-0232dd09f9e2"
+}, {
+  "montoRetirado" : 10.0,
+  "nombreCliente" : "sex",
+  "fecha" : "2025-12-08T11:02:54.309095541",
+  "tipo" : "pago",
+  "token" : "0cc47dda-512c-410f-bf08-977e4c189f28"
+}, {
+  "costoGeneracion" : 10.0,
+  "nombreCliente" : "pimblett",
+  "fecha" : "2025-12-08T11:03:08.469143390",
+  "tipo" : "generacion",
+  "token" : "066e9083-13b5-49bd-9c3a-0b038aa1730f"
+}, {
+  "montoRetirado" : 10.0,
+  "nombreCliente" : "pimblett",
+  "fecha" : "2025-12-08T11:03:08.506400479",
+  "tipo" : "pago",
+  "token" : "066e9083-13b5-49bd-9c3a-0b038aa1730f"
 } ]

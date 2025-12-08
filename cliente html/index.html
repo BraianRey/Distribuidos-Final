@@ -453,6 +453,62 @@
             margin-bottom: 8px;
             display: block;
         }
+
+        /* Estilos para la lista de usuarios activos */
+        .active-users-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .active-users-panel .panel-title {
+            color: #2d3748;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .users-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            min-height: 40px;
+        }
+
+        .user-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .user-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .user-badge-icon {
+            font-size: 1rem;
+        }
+
+        .no-users-text {
+            color: #718096;
+            font-style: italic;
+            font-size: 0.875rem;
+            margin: 0;
+            padding: 10px 0;
+        }
     </style>
     <link rel="stylesheet" href="./reacciones.css" />
 </head>
@@ -531,6 +587,14 @@
                 <h2 class="section-title reactions-title">
                     💬 Reacciones en Tiempo Real
                 </h2>
+
+                <!-- Panel estático de usuarios activos -->
+                <section class="active-users-panel">
+                    <h3 class="panel-title">👥 Usuarios Escuchando Ahora</h3>
+                    <div id="listaUsuariosActivos" class="users-list">
+                        <p class="no-users-text">No hay usuarios escuchando esta canción</p>
+                    </div>
+                </section>
 
                 <section class="content-grid">
                     <article class="panel list-panel">
