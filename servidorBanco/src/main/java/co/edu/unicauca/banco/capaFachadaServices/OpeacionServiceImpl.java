@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import co.edu.unicauca.banco.accesoADatos.entity.OperacionToken;
 import co.edu.unicauca.banco.accesoADatos.repositorio.OperacionTokenMemoryRepository;
-import co.edu.unicauca.banco.accesoADatos.repositorio.PaymentRegistry;
 
 @Service
 public class OpeacionServiceImpl implements OperacionServiceInt{
@@ -18,17 +17,8 @@ public class OpeacionServiceImpl implements OperacionServiceInt{
     @Autowired
     private OperacionTokenMemoryRepository tokenRepo;
 
-    private static final int MAX_PAYMENTS = 5;
-
     public String generarToken(String nombreCliente) {
         System.out.println("Generando token para cliente " + nombreCliente);
-        // Check if client already reached payment limit
-        int paidCount = tokenRepo.countPayments(nombreCliente);
-        if (paidCount >= MAX_PAYMENTS) {
-            String msg = "Limite alcanzado para cliente " + nombreCliente + " (" + paidCount + "/" + MAX_PAYMENTS + " pagos). No se genera nuevo token.";
-            System.out.println("BLOQUEO: " + msg);
-            return msg;
-        }
         // costo por token generado (informativo)
         double costo = 10.0;
         String token = UUID.randomUUID().toString();
@@ -38,21 +28,20 @@ public class OpeacionServiceImpl implements OperacionServiceInt{
         opToken.setFechaCreacion(LocalDateTime.now());
         opToken.setCostoGeneracion(costo);
         opToken.setNombreCliente(nombreCliente);
-        tokenRepo.guardar(opToken);
-        // registrar generación en JSON
-        PaymentRegistry.recordGeneration(opToken);
+        // Intento atómico de guardar token en repositorio; el repositorio bloquea la generación
+        boolean saved = tokenRepo.trySaveGeneration(opToken);
+        if (!saved) {
+            int paidCount = tokenRepo.countPayments(nombreCliente);
+            String msg = "Limite alcanzado para cliente " + nombreCliente + " (" + paidCount + "/5 pagos). No se genera nuevo token.";
+            System.out.println("BLOQUEO: " + msg);
+            return msg;
+        }
         return token;
     }
 
     public String procesarPago(String token, double monto, String nombreCliente) {
         System.out.println("Procesando pago para cliente " + nombreCliente);
 
-        int paidCount = tokenRepo.countPayments(nombreCliente);
-        if (paidCount >= MAX_PAYMENTS) {
-            String msg = "Limite alcanzado para cliente " + nombreCliente + " (" + paidCount + "/" + MAX_PAYMENTS + " pagos)";
-            System.out.println("RECHAZO PAGO: " + msg);
-            return msg;
-        }
         String respuesta = "";
         Optional<OperacionToken> opToken = tokenRepo.buscarPorId(token);
         if (!opToken.isPresent()) {
@@ -67,12 +56,15 @@ public class OpeacionServiceImpl implements OperacionServiceInt{
             return respuesta;
         }
         System.out.println("Procesando pago de $" + monto);
-        t.setUsado(true);
         t.setMontoRetirado(monto);
         t.setNombreCliente(nombreCliente);
-        this.tokenRepo.actualizar(t);
-        // registrar pago en JSON
-        PaymentRegistry.recordPayment(t);
+        boolean registered = this.tokenRepo.tryRegisterPayment(t);
+        if (!registered) {
+            String msg = "Limite alcanzado para cliente " + nombreCliente + " (" + tokenRepo.countPayments(nombreCliente) + "/5 pagos)";
+            System.out.println("RECHAZO PAGO: " + msg);
+            return msg;
+        }
+        // El repositorio ya actualizó la memoria y persiste el pago en el log de forma atómica
         respuesta = "pago exitoso";
         System.out.println("EXITO PAGO: " + respuesta + " (token=" + token + ", cliente=" + nombreCliente + ", monto=$" + monto + ")");
         return respuesta;
