@@ -19,14 +19,18 @@ public class OperacionTokenMemoryRepository {
 
     public void guardar(OperacionToken token) {
         almacenamiento.put(token.getToken(), token);
+        System.out.println("Guardado token=" + token.getToken() + " cliente=" + token.getNombreCliente() + " fecha=" + token.getFechaCreacion());
     }
 
     public Optional<OperacionToken> buscarPorId(String token) {
-        return Optional.ofNullable(almacenamiento.get(token));
+        OperacionToken t = almacenamiento.get(token);
+        System.out.println("buscarPorId token=" + token + " -> " + (t != null ? "ENCONTRADO" : "NO_ENCONTRADO"));
+        return Optional.ofNullable(t);
     }
 
     public void actualizar(OperacionToken token) {
         almacenamiento.put(token.getToken(), token);
+        System.out.println("actualizar token=" + token.getToken() + " usado=" + token.isUsado() + " monto=" + token.getMontoRetirado());
     }
 
     public List<Double> getMontosPagados(String nombreCliente) {
@@ -36,6 +40,7 @@ public class OperacionTokenMemoryRepository {
                 montos.add(token.getMontoRetirado());
             }
         }
+        System.out.println("getMontosPagados nombreCliente=" + nombreCliente + " -> " + montos.size() + " registros");
         return montos;
     }
 

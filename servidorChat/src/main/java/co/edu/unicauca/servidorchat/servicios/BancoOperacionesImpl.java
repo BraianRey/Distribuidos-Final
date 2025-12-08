@@ -6,6 +6,7 @@ import org.springframework.retry.annotation.Recover;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import feign.FeignException;
+import feign.RetryableException;
 
 import java.util.Map;
 
@@ -28,7 +29,7 @@ public class BancoOperacionesImpl {
      * Máximo 5 intentos con delay de 2 segundos.
      */
     @Retryable(
-        retryFor = {FeignException.class},
+        retryFor = {FeignException.class, RetryableException.class},
         maxAttempts = MAX_ATTEMPTS_TOKEN,
         backoff = @Backoff(delay = DELAY_MS)
     )
@@ -44,7 +45,7 @@ public class BancoOperacionesImpl {
      * Máximo 5 intentos con delay de 2 segundos.
      */
     @Retryable(
-        retryFor = {FeignException.class},
+        retryFor = {FeignException.class, RetryableException.class},
         maxAttempts = MAX_ATTEMPTS_PAGO,
         backoff = @Backoff(delay = DELAY_MS)
     )
@@ -65,6 +66,13 @@ public class BancoOperacionesImpl {
         return "Error: No se pudo generar token tras " + MAX_ATTEMPTS_TOKEN + " intentos";
     }
 
+    @Recover
+    public String recuperarGenerarToken(RetryableException ex, String nombreCliente) {
+        System.err.println("Todos los reintentos fallaron (timeout) para generar token del cliente: " + nombreCliente);
+        System.err.println("Causa: " + ex.getMessage());
+        return "Error: No se pudo generar token tras " + MAX_ATTEMPTS_TOKEN + " intentos (timeout)";
+    }
+
     /**
      * Método de recuperación cuando fallan todos los reintentos para pago.
      */
@@ -73,5 +81,12 @@ public class BancoOperacionesImpl {
         System.err.println("Todos los reintentos fallaron para procesar pago con token: " + token);
         System.err.println("Causa: " + ex.getMessage());
         return "Error: No se pudo procesar pago tras " + MAX_ATTEMPTS_PAGO + " intentos";
+    }
+
+    @Recover
+    public String recuperarProcesarPago(RetryableException ex, String token, Map<String, Object> body) {
+        System.err.println("Todos los reintentos fallaron (timeout) para procesar pago con token: " + token);
+        System.err.println("Causa: " + ex.getMessage());
+        return "Error: No se pudo procesar pago tras " + MAX_ATTEMPTS_PAGO + " intentos (timeout)";
     }
 }

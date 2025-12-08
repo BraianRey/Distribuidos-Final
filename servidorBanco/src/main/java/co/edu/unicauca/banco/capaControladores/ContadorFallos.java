@@ -12,11 +12,14 @@ public class ContadorFallos {
     private final int initialFailureCountPerOperation = 4;
 
     public int siguienteIntento() {
-        return contador.incrementAndGet();
+        int val = contador.incrementAndGet();
+        System.out.println("[CFallo] siguienteIntento -> " + val + " (thread=" + Thread.currentThread().getName() + ")");
+        return val;
     }
 
     public void resetear() {
         contador.set(0);
+        System.out.println("[CFallo] resetear -> contador a 0");
     }
 
     /**
@@ -24,7 +27,9 @@ public class ContadorFallos {
      * durante la secuencia inicial de las primeras operaciones.
      */
     public boolean shouldSimulateInitialFailure(int intento) {
-        return initialOperationsRemaining.get() > 0 && intento <= initialFailureCountPerOperation;
+        boolean should = initialOperationsRemaining.get() > 0 && intento <= initialFailureCountPerOperation;
+        System.out.println("[CFallos] shouldSimulateInitialFailure? intento=" + intento + ", remainingOps=" + initialOperationsRemaining.get() + ", perOpFailCount=" + initialFailureCountPerOperation + " -> " + should);
+        return should;
     }
 
     /**
@@ -38,5 +43,6 @@ public class ContadorFallos {
             initialOperationsRemaining.set(0);
         }
         contador.set(0);
+        System.out.println("[CFallos] markInitialSequenceDone -> remaining=" + Math.max(0, remaining) + ", contador reseteado a 0");
     }
 }

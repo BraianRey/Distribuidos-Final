@@ -29,9 +29,7 @@ public class FeignConfig {
      */
     @Bean
     public Retryer retryer() {
-        // period: delay inicial en milisegundos
-        // maxPeriod: delay máximo en milisegundos
-        // maxAttempts: número máximo de intentos
-        return new Retryer.Default(100, 1000, 3);
+        // Desactivar los reintentos internos de Feign para dejar el control
+        return Retryer.NEVER_RETRY;
     }
 }
